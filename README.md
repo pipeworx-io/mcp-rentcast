@@ -2,12 +2,13 @@
 
 Rentcast MCP — wraps Rentcast API (api.rentcast.io/v1)
 
-Part of [Pipeworx](https://pipeworx.io) — an MCP gateway connecting AI agents to 1476+ live data sources.
+Part of [Pipeworx](https://pipeworx.io) — an MCP gateway connecting AI agents to 1679+ live data sources.
 
 ## Tools
 
 | Tool | Description |
 |------|-------------|
+| `search_rental_listings` | Search ACTIVE rental listings — individual homes and apartments currently for rent in the US, from RentCast's listing feed. Filter by city+state, ZIP code, or a latitude/longitude radius, plus bedrooms, bathrooms, and property type. Returns each listing's address, monthly rent, beds/baths, square footage, and listing date. Note: bedrooms/bathrooms filters are exact-match (e.g. bedrooms 3 returns only 3-bed homes; for "3-4 beds" call twice). This is the tool for "find homes/apartments for rent near X" — unlike area rent statistics (HUD Fair Market Rents) or single-address rent estimates. |
 | `get_rent_estimate` | Get a rental price estimate for a US property address. Returns estimated monthly rent, price range, and comparable rental data. Example: "1234 Main St, Austin, TX 78701". |
 | `get_property` | Get property details for a US address. Returns bedrooms, bathrooms, square footage, lot size, year built, property type, and owner info when available. |
 
@@ -55,9 +56,39 @@ directly, instead of just this one's:
 }
 ```
 
-Both URLs reach the same gateway and the same 1476+ data sources. The
+Both URLs reach the same gateway and the same 1679+ data sources. The
 only difference is which pack's tools are listed **directly**; `ask_pipeworx`
 reaches all of them from either one.
+
+## No MCP client? Call it over HTTP
+
+This pack takes your own API key (`_apiKey`) — we don't front one for it, so there's no curl here that would run without it. Inspect any tool: `GET https://gateway.pipeworx.io/v1/tools/search_rental_listings`. Find one: `POST https://gateway.pipeworx.io/v1/tools/search_packs` with `{"query":"..."}`.
+
+## Standalone (no gateway account)
+
+This package also runs as a local stdio MCP server — no Pipeworx account, no
+gateway round-trip:
+
+```json
+{
+  "mcpServers": {
+    "rentcast": {
+      "command": "npx",
+      "args": ["-y", "@pipeworx/mcp-rentcast"]
+    }
+  }
+}
+```
+
+Or run it directly to confirm it starts:
+
+```bash
+npx -y @pipeworx/mcp-rentcast
+```
+
+It speaks MCP over stdin/stdout and answers `initialize`/`tools/list`/`tools/call`
+for **only** this pack's tools — none of the shared meta-tools the gateway
+connection above adds. Same source, same tools, no ask_pipeworx routing.
 
 ## Using with ask_pipeworx
 
@@ -78,7 +109,3 @@ The gateway picks the right tool and fills the arguments automatically.
 ## License
 
 MIT
-
-## No MCP client? Call it over HTTP
-
-This pack takes your own API key (`_apiKey`) — we don't front one for it, so there's no curl here that would run without it. Inspect any tool: `GET https://gateway.pipeworx.io/v1/tools/search_rental_listings`. Find one: `POST https://gateway.pipeworx.io/v1/tools/search_packs` with `{"query":"..."}`.
