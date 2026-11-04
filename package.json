@@ -1,6 +1,6 @@
 {
   "name": "@pipeworx/mcp-rentcast",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Rentcast MCP — wraps Rentcast API (api.rentcast.io/v1)",
   "type": "module",
   "main": "lib/index.js",
@@ -27,7 +27,7 @@
     "mode": "gateway",
     "slug": "rentcast",
     "gatewaySlug": "rentcast",
-    "sourceHash": "v1-456c16ae0b918e7c4b1bbd8c169d3aef515982b41f2b124393334e5ac014d7f8",
-    "sourceCommit": "6bae4cfa7b6a73bbe014dc8820a19c80c842b21e"
+    "sourceHash": "v1-bcb70c4a244e5bd6165714371daf63db68d31eb1619214417c6904eee01d44db",
+    "sourceCommit": "db27387ed3ef7ec4805d465f7964a7f65f937006"
   }
 }
